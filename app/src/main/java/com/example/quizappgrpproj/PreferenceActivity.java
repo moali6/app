@@ -1,10 +1,16 @@
 package com.example.quizappgrpproj;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import android.os.Bundle;
+import android.view.MenuItem;
+
+import java.util.Objects;
 
 public class PreferenceActivity extends AppCompatActivity implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
@@ -19,14 +25,26 @@ public class PreferenceActivity extends AppCompatActivity implements PreferenceF
                     .replace(R.id.settings, new MainPref())
                     .commit();
         }
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 
-    class MainPref extends PreferenceFragmentCompat {
+    public static class MainPref extends PreferenceFragmentCompat {
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.main_preference, rootKey);
+
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            super.onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
